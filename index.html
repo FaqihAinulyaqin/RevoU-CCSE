@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f8f2" />
+    <title>Personal spending tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['"Plus Jakarta Sans"', "sans-serif"],
+              body: ['"DM Sans"', "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-left" aria-hidden="true"></div>
+    <div class="ambient ambient-right" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="header-actions">
+        <span class="date-label" id="todayLabel"></span>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Toggle color theme">
+          <span class="theme-icon" aria-hidden="true">☼</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="intro-row" aria-labelledby="pageTitle">
+        <div>
+          <p class="eyebrow">PERSONAL FINANCE, MADE SIMPLE</p>
+          <h1 id="pageTitle">Know where your<br /><em>money</em> goes.</h1>
+        </div>
+        <p class="intro-copy">A calm little corner for keeping an eye on your everyday spending.</p>
+      </section>
+
+      <section class="balance-panel" aria-label="Total balance">
+        <div>
+          <p class="section-label">TOTAL SPENDING</p>
+          <p class="balance-amount" id="totalBalance">Rp0</p>
+        </div>
+        <div class="balance-note">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span id="transactionSummary">No transactions yet</span>
+        </div>
+      </section>
+
+      <section class="dashboard-grid">
+        <div class="left-column">
+          <section class="surface form-surface" aria-labelledby="addTitle">
+            <div class="surface-heading">
+              <div>
+                <p class="section-label">NEW ENTRY</p>
+                <h2 id="addTitle">Add a transaction</h2>
+              </div>
+              <span class="form-number" aria-hidden="true">01</span>
+            </div>
+            <form id="transactionForm" novalidate>
+              <div class="field-group">
+                <label for="itemName">Item name</label>
+                <input id="itemName" name="itemName" type="text" placeholder="e.g. Morning coffee" autocomplete="off" />
+              </div>
+              <div class="form-row">
+                <div class="field-group">
+                  <label for="amount">Amount</label>
+                  <div class="input-prefix"><span>Rp</span><input id="amount" name="amount" type="number" min="1" step="1" placeholder="0" inputmode="decimal" /></div>
+                </div>
+                <div class="field-group">
+                  <label for="category">Category</label>
+                  <select id="category" name="category"></select>
+                </div>
+              </div>
+              <div class="custom-category-row">
+                <input id="customCategory" name="customCategory" type="text" placeholder="New category name" maxlength="24" autocomplete="off" />
+                <button class="text-button" id="addCategoryButton" type="button">+ Add category</button>
+              </div>
+              <p class="form-message" id="formMessage" role="alert" aria-live="polite"></p>
+              <button class="primary-button" type="submit"><span>+</span> Add transaction</button>
+            </form>
+          </section>
+
+          <section class="surface transactions-surface" aria-labelledby="transactionsTitle">
+            <div class="list-heading">
+              <div>
+                <p class="section-label">YOUR ACTIVITY</p>
+                <h2 id="transactionsTitle">Transactions <span class="count-badge" id="transactionCount">0</span></h2>
+              </div>
+              <label class="sort-control" for="sortSelect">
+                <span>Sort by</span>
+                <select id="sortSelect" aria-label="Sort transactions">
+                  <option value="newest">Newest</option>
+                  <option value="amount-desc">Amount: high to low</option>
+                  <option value="amount-asc">Amount: low to high</option>
+                  <option value="category">Category</option>
+                </select>
+              </label>
+            </div>
+            <div class="transaction-list" id="transactionList" aria-live="polite"></div>
+          </section>
+        </div>
+
+        <aside class="surface chart-surface" aria-labelledby="chartTitle">
+          <div class="surface-heading">
+            <div>
+              <p class="section-label">SPENDING SNAPSHOT</p>
+              <h2 id="chartTitle">By category</h2>
+            </div>
+            <span class="form-number" aria-hidden="true">02</span>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="spendingChart" aria-label="Pie chart of spending by category"></canvas>
+            <div class="chart-empty" id="chartEmpty">Your spending<br />story starts here.</div>
+          </div>
+          <div class="legend" id="chartLegend"></div>
+          <div class="chart-footer"><span>Saved locally in your browser</span><span class="lock-icon" aria-hidden="true">⌑</span></div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="site-footer">Small steps, clearer days</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
